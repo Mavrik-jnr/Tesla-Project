@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-# Tesla-Project
-
-A Tesla website clone built with ReactJs, React Redux, Firebase, and Material UI
-=======
 # TeslaProject
 
 A Tesla Website Clone with React, React-Redux, Firebase and Material UI
-<<<<<<< HEAD
->>>>>>> c874b62 (Solved Conflict)
-=======
 
 # Getting Started with Create React App and Redux
 
@@ -56,4 +48,3 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
->>>>>>> e8a5088 (Solved Conflict)
