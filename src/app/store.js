@@ -1,3 +1,4 @@
+// Portable Says Hi
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from '../features/counterSlice';
 
