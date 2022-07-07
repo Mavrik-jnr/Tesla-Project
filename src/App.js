@@ -1,25 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import Header from "./Components/Header";
 import {
   BrowserRouter as Router,
   Routes,
-  Switch,
   Route,
-  Redirect,
+  Navigate,
 } from "react-router-dom";
 import Menu from "./Components/Menu";
 import HeaderBlock from "./Components/HeaderBlock";
-// import { Switch } from "@material-ui/core";
-// import { CompatRouter } from "react-router-dom-v5-compat";
+import Login from "./Components/Login";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "./features/userSlice";
+import Signup from "./Components/Signup";
+import TeslaAccount from "./Components/TeslaAccount";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "./firebase";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const auth = getAuth(app);
+
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (userAuth) => {
+      if (userAuth) {
+        dispatch(
+          login({
+            email: userAuth.user.email,
+            uid: userAuth.user.uid,
+            displayName: userAuth.user.displayName,
+          })
+        );
+      } else {
+        dispatch(logout());
+      }
+    });
+  }, []);
   return (
     <Router>
       <div className="App">
         <Routes>
           <Route
-            exact
             path="/"
             element={
               <>
@@ -32,12 +56,25 @@ function App() {
 
           <Route
             path="/login"
+            element={user ? <Navigate to="/teslaaccount" /> : <Login />}
+          />
+
+          <Route path="/signup" element={<Signup />} />
+
+          <Route
+            path="/teslaaccount"
             element={
-              <>
-                <Header menuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-                {/* {isMenuOpen && <Menu />}
-            <HeaderBlock /> */}
-              </>
+              !user ? (
+                <Navigate to="/login" />
+              ) : (
+                <>
+                  <TeslaAccount
+                    isMenuOpen={isMenuOpen}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                  {isMenuOpen && <Menu />}
+                </>
+              )
             }
           />
         </Routes>
